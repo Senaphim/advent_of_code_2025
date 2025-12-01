@@ -6,22 +6,24 @@ class Dial:
     def increment(self, inc):
         self.pointer = self.pointer + inc
         if self.pointer >= 100:
-            self.pointer -= 100
+            self.pointer = self.pointer % 100
 
         return self.values[self.pointer]
 
     def decrement(self, dec):
-        self.pointer = self.pointer - dec
-        if self.pointer < 0:
-            self.pointer += 100
+        inc = 100 - (dec % 100)
+        _ = self.increment(inc)
 
         return self.values[self.pointer]
 
 
 def main():
     dial = Dial()
-    rotations = ["L68", "L30", "R48", "L5", "R60", "L55", "L1", "L99", "R14", "L82"]
+    rotations = []
     zero_count = 0
+
+    with open("../data.txt", "r") as file:
+        rotations = [line for line in file]
 
     for rotation in rotations:
         if "L" in rotation:
